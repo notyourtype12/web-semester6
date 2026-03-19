@@ -54,7 +54,6 @@
                                         <th>Judul</th>
                                         <th>Gambar</th>
                                         <th>Deskripsi</th>
-                                        <th>Tanggal</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -73,19 +72,17 @@
                                             {{ $i }}
                                         </td>
 
-                                        <td>
+                                        <td style="width: 30%" >
                                             {{ $item->judul }}
                                         </td>
 
                                         <td>
 
-                                            <img src="{{ asset('storage/imageberita/'.$item->image) }}"
-                                                 class="border"
+                                            <img src="{{ asset('storage/imageberita/'.$item->image) }}" class="border"
                                                  style="width:200px; height:auto;">
-
                                         </td>
 
-                                        <td>
+                                        <td style="width: 30%" >
 
                                             @php
                                                 $words = explode(' ', strip_tags($item->deskripsi));
@@ -98,135 +95,88 @@
                                             @endif
 
                                         </td>
-
-                                        <td>
-                                            {{ $item->tanggal }}
-                                        </td>
-
-
                                         {{-- AKSI --}}
                                         <td>
-
                                             {{-- EDIT --}}
-                                            <a href="{{ url('admin/berita/'.$item->id_berita.'/edit') }}"
-                                               class="btn btn-warning btn-sm me-1">
-
+                                            <a href="{{ url('admin/berita/'.$item->id_berita.'/edit') }}" class="btn btn-warning btn-sm me-1">
                                                 <i class="fas fa-pencil-alt"></i>
-
                                             </a>
-
-
                                             {{-- DELETE --}}
                                             <form id="formHapus{{ $item->id_berita }}"
                                                   class="d-inline"
                                                   action="{{ url('admin/berita/'.$item->id_berita) }}"
                                                   method="POST">
-
                                                 @csrf
                                                 @method('DELETE')
-
                                                 <button type="button"
                                                         class="btn btn-danger btn-sm btnHapus"
                                                         data-id="{{ $item->id_berita }}"
                                                         data-nama="{{ $item->judul }}">
 
                                                     <i class="fas fa-trash"></i>
-
                                                 </button>
-
                                             </form>
-
                                         </td>
-
                                     </tr>
-
                                     @php $i++ @endphp
-
                                     @empty
-
                                     <tr>
                                         <td colspan="6" class="text-center">
                                             Belum ada data
                                         </td>
                                     </tr>
-
                                     @endforelse
-
                                 </tbody>
-
                             </table>
-
                         </div>
-
-
                         {{-- PAGINATION --}}
                         {{ $databerita->links() }}
-
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
-
 </section>
 
-
-{{-- STYLE TABEL --}}
-<style>
-
-table{
-    table-layout: fixed;
-    width: 100%;
-}
-
-td.judul,
-td.deskripsi{
-    white-space: normal;
-    word-wrap: break-word;
-    max-width: 400px;
-    text-align: justify;
-}
-
-</style>
-
-
 {{-- SWEET ALERT DELETE --}}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="{{ asset('assets/modules/sweetalert/sweetalert.min.js') }}"></script>
+<script src="{{ asset('assets/js/page/modules-sweetalert.js') }}"></script>
 <script>
-
 document.addEventListener('DOMContentLoaded', function(){
 
     const hapusButtons = document.querySelectorAll('.btnHapus');
 
     hapusButtons.forEach(button => {
 
-        button.addEventListener('click', function(){
+        button.addEventListener('click', function(e){
+
+            e.preventDefault();
 
             const id   = this.getAttribute('data-id');
             const nama = this.getAttribute('data-nama');
 
-            Swal.fire({
-
-                title: 'Yakin ingin menghapus?',
+            swal({
+                title: "Yakin ingin menghapus?",
                 text: `Data berita dengan judul "${nama}" akan dihapus!`,
-                icon: 'warning',
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
 
-                showCancelButton: true,
+                if (willDelete) {
 
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                    swal("Data berhasil dihapus!", {
+                        icon: "success",
+                    });
 
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Batal'
+                    setTimeout(() => {
+                        document.getElementById('formHapus' + id).submit();
+                    }, 800);
 
-            }).then((result) => {
-
-                if(result.isConfirmed){
-                    document.getElementById('formHapus' + id).submit();
                 }
+
+                // ❌ tidak ada else → tidak muncul apa-apa saat batal
 
             });
 
@@ -235,7 +185,6 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 
 });
-
 </script>
 
 @endsection

@@ -107,6 +107,7 @@ Route::middleware(['auth', 'role:1'])->prefix('admin')->group(function () {
     Route::get('upload/berita/{id}/edit', [BeritaController::class, 'edit'])->name('admin.berita.edit');
     Route::put('upload/berita/{id}', [BeritaController::class, 'update'])->name('admin.berita.update');
     Route::delete('upload/berita/{id}/delete', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
+    Route::post('/upload-image', [BeritaController::class, 'uploadImage'])->name('upload.image');
 
     // KARTU KELUARGA
     Route::get('master_kartukeluarga', [KartuKeluargaController::class, 'index'])->name('kartukeluarga.view');

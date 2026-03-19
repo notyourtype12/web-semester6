@@ -12,15 +12,20 @@ class master_berita extends Model
 
     protected $table = 'master_beritas'; 
 
+    protected $primaryKey = 'id_berita';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
         'id_berita',
         'judul',
-        'isi',
-        'image',
         'deskripsi',
-        'tanggal',
         'nik',
     ];
+
+    public $timestamps = true;
+ 
+    
     public function penulis()
 {
     return $this->belongsTo(master_penduduk::class, 'nik', 'nik');

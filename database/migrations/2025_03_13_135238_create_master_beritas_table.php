@@ -13,9 +13,7 @@ return new class extends Migration
             
             $table->primary('id_berita');$table->string('id_berita', 10);
             $table->string('judul', 150);
-            $table->string('tanggal');
-            $table->text('deskripsi');
-            $table->string('image', 100);
+            $table->longText('deskripsi');
             $table->char('nik', 16);
             $table->foreign('nik')->references('nik')->on('master_penduduks')->onDelete('cascade');
             $table->timestamps();
