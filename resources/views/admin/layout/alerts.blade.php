@@ -1,37 +1,52 @@
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    @if (session('success'))
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: '{{ session('success') }}',
-            confirmButtonColor: '#3085d6',
-            timer: 3000,  // Durasi 5 detik
-            showConfirmButton: false, 
-        });
-    @elseif (session('error'))
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal!',
-            text: '{{ session('error') }}',
-            confirmButtonColor: '#d33',
-        });
-    @elseif (session('warning'))
-        Swal.fire({
-            icon: 'warning',
-            title: 'Peringatan!',
-            text: '{{ session('warning') }}',
-            confirmButtonColor: '#ffc107',
-        });
-    @endif
+<style>
+.alert-floating {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9999;
 
-   @if ($errors->any())
-    let errorText = `{!! implode('<br>', $errors->all()) !!}`;
-    Swal.fire({
-        icon: 'error',
-        title: 'Gagal!',
-        html: errorText,
-        confirmButtonColor: '#d33',
-    });
-@endif
+    min-width: 250px;
+    max-width: 350px;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+/* masuk */
+.alert-floating.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* keluar */
+.alert-floating.hide {
+    transform: translateX(120%);
+    opacity: 0;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+
+    const alertBox = document.getElementById('alertPopup');
+
+    if(alertBox){
+
+        // muncul
+        setTimeout(() => {
+            alertBox.classList.add('show');
+        }, 100);
+
+        // hilang
+        setTimeout(() => {
+            alertBox.classList.remove('show');
+            alertBox.classList.add('hide');
+        }, 3000);
+
+    }
+
+});
 </script>

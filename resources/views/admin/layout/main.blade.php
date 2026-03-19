@@ -39,6 +39,8 @@
 <body>
   <div id="app">
     <div class="main-wrapper">
+
+      @include('admin.layout.alerts')
       
       {{-- Navbar --}}
       @include('admin.layout.navbar')

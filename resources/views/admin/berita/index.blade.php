@@ -5,9 +5,14 @@
 
 <section class="section">
 
-    <div class="section-header">
+   <div class="section-header">
         <h1>Master Berita</h1>
     </div>
+    @if(session('success'))
+    <div id="alertPopup" class="alert alert-success alert-floating">
+        {{ session('success') }}
+    </div>
+    @endif
 
     <div class="section-body">
         <div class="row">
@@ -166,17 +171,21 @@ document.addEventListener('DOMContentLoaded', function(){
 
                 if (willDelete) {
 
-                    swal("Data berhasil dihapus!", {
+                    // 🔥 alert sukses tanpa tombol
+                    swal({
+                        title: "Berhasil!",
+                        text: "Data berhasil dihapus",
                         icon: "success",
+                        buttons: false, // ❌ tidak ada tombol
+                        timer: 3000     // ⏱ auto close 3 detik
                     });
 
+                    // submit setelah sedikit delay
                     setTimeout(() => {
                         document.getElementById('formHapus' + id).submit();
-                    }, 800);
+                    }, 500);
 
                 }
-
-                // ❌ tidak ada else → tidak muncul apa-apa saat batal
 
             });
 
