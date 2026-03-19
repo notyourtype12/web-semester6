@@ -128,9 +128,10 @@
 
 
 {{-- JAVASCRIPT --}}
-<script src="{{ asset('js/mastersurat.js') }}"></script>
+
 <script src="{{ asset('assets/modules/sweetalert/sweetalert.min.js') }}"></script>
 <script src="{{ asset('assets/js/page/modules-sweetalert.js') }}"></script>
+<script src="{{ asset('js/mastersurat.js') }}"></script>
 <script>
 
 </script>

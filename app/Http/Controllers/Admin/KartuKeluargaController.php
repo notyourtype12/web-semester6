@@ -78,7 +78,7 @@ class KartuKeluargaController extends Controller
             'status_keluarga' => 'KEPALA KELUARGA'
         ]);
 
-        return redirect(url('admin/master_kartukeluarga'))->with('success', 'Data berhasil ditambahkan');
+        return redirect(url('admin/master_kartukeluarga'))->with('success', 'Data kartu keluarga berhasil ditambahkan');
     }
 
     public function update(Request $request, $no_kk_lama) {
@@ -150,7 +150,7 @@ class KartuKeluargaController extends Controller
             'nama_lengkap' => $request->nama_lengkap
         ]);
     
-        return redirect('admin/master_kartukeluarga')->with('success', 'Data berhasil diperbarui');
+        return redirect('admin/master_kartukeluarga')->with('success', 'Data kartu keluarga berhasil diperbarui');
     }
 
     // Menghapus data berdasarkan No KK
@@ -159,6 +159,6 @@ class KartuKeluargaController extends Controller
         master_penduduk::where('no_kk', $no_kk)->delete();
         master_kartukeluarga::where('no_kk', $no_kk)->delete();
 
-        return redirect(url('admin/master_kartukeluarga'))->with('success', 'Data berhasil dihapus');
+        return redirect(url('admin/master_kartukeluarga'))->with('success', 'Data kartu keluarga berhasil dihapus');
     }
 }

@@ -6,6 +6,11 @@
     <div class="section-header">
         <h1>Kartu Keluarga</h1>
     </div>
+    @if(session('success'))
+    <div id="alertPopup" class="alert alert-success alert-floating">
+        {{ session('success') }}
+    </div>
+    @endif
 
     <div class="section-body">
         <div class="row">
@@ -27,11 +32,9 @@
                           </form>
 
                           <!-- KANAN : TOMBOL TAMBAH -->
-                          <a href="#" class="btn btn-primary"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalKeluarga">
-                              + Tambah Data
-                          </a>
+                          <button id="btnTambah" class="btn btn-primary">
+                            + Tambah Data
+                        </button>
 
                       </div>
                   </div>
@@ -61,7 +64,7 @@
                                         <td>{{ $a->rt }}</td>
                                         <td>
                                             <!-- EDIT -->
-                                            <button class="btn btn-warning btn-sm editButton"
+                                            <button class="btn btn-warning btn-sm btnEditKeluarga"
                                                 data-id="{{ $a->no_kk }}"
                                                 data-no_kk="{{ $a->no_kk }}"
                                                 data-nik="{{ $a->nik ?? '' }}"
@@ -79,10 +82,13 @@
                                             </button>
 
                                             <!-- HAPUS -->
-                                            <a href="{{ route('kartukeluarga.delete',$a->no_kk) }}"
-                                               class="btn btn-danger btn-sm" title="Hapus Data">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
+                                            <form id="formHapus{{ $a->no_kk }}" style="display: inline" action="{{ route('kartukeluarga.delete', $a->no_kk) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger btn-sm btnDeleteKeluarga" data-id="{{ $a->no_kk }}" data-nama_lengkap="{{ $a->nama_lengkap }}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
 
                                             <!-- TAMBAH PENDUDUK -->
                                             <a href="{{ url('admin/master_penduduk?nokk=' . $a->no_kk) }}"
@@ -113,7 +119,6 @@
     <div class="modal-content">
       <form id="keluargaForm" method="POST" action="{{ url('admin/master_kartukeluarga/masuk') }}">
         @csrf
-        <input type="hidden" name="_method" value="PUT">
 
         <div class="modal-header">
           <h5 class="modal-title" id="modalKeluargaLabel">Tambah Data Kepala Keluarga</h5>
@@ -172,6 +177,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ asset('assets/modules/sweetalert/sweetalert.min.js') }}"></script>
+<script src="{{ asset('assets/js/page/modules-sweetalert.js') }}"></script>
 <script src="{{ asset('js/kartukeluarga.js') }}"></script>
 
 @endsection

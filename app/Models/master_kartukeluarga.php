@@ -13,7 +13,7 @@ class master_kartukeluarga extends Model
     protected $primaryKey = 'no_kk'; // Definisikan no_kk sebagai primary key
     public $incrementing = false; // Karena no_kk bukan auto-increment
     protected $keyType = 'string'; // Jika no_kk bertipe string
-    public $timestamps = false;
+    public $timestamps = true;
 
 
     protected $fillable = [

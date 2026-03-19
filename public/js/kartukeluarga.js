@@ -1,57 +1,63 @@
 
 $(document).ready(function () {
-    // Konfirmasi Hapus
-    $(".delete").click(function (e) {
+    // ================= DELETE =================
+    $(document).on("click", ".btnDeleteKeluarga", function (e) {
         e.preventDefault();
-        let nama = $(this).data("nama_lengkap");
-        let url = $(this).attr("href");
 
-        Swal.fire({
+        const id = $(this).data("id");
+        const nama = $(this).data("nama_lengkap");
+
+        swal({
             title: "Yakin ingin menghapus?",
-            text: "Data atas nama " + nama + " akan dihapus!",
+            text: `Data surat "${nama}" akan dihapus!`,
             icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Ya, Hapus!",
-            cancelButtonText: "Batal",
-            didOpen: () => {
-                const icon = document.querySelector(".swal2-icon");
-                if (icon) {
-                    icon.style.marginTop = "30px";
-                }
-            },
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = url;
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                swal({
+                    title: "Berhasil!",
+                    text: "Data berhasil dihapus",
+                    icon: "success",
+                    buttons: false,
+                    timer: 3000,
+                });
+
+                setTimeout(() => {
+                    $("#formHapus" + id).submit();
+                }, 500);
             }
         });
     });
 
-    // Mode Tambah
+    // ================= TAMBAH =================
     $("#btnTambah").click(function () {
-        // Reset form
-        $("#keluargaForm")[0].reset();
-        $("#modalKeluargaLabel").text("Tambah Data Kepala Keluarga");
-        $("#keluargaForm").attr("action", "/admin/master_kartukeluarga/masuk");
-        $("#keluargaForm").find('input[name="_method"]').remove();
+        let form = $("#keluargaForm");
 
-        // Tampilkan modal (Bootstrap 5)
-        var myModal = new bootstrap.Modal(document.getElementById('modalKeluarga'));
+        form[0].reset();
+        form.find('input[name="_method"]').remove();
+        form.attr("action", "/admin/master_kartukeluarga/masuk");
+
+        $("#modalKeluargaLabel").text("Tambah Data Kepala Keluarga");
+
+        var myModal = new bootstrap.Modal(
+            document.getElementById("modalKeluarga"),
+        );
         myModal.show();
     });
 
-    // Mode Edit
-    $(".editButton").click(function () {
+    // ================= EDIT =================
+    $(".btnEditKeluarga").click(function () {
         let data = $(this).data();
 
         $("#modalKeluargaLabel").text("Edit Data Kepala Keluarga");
 
+        let form = $("#keluargaForm");
         let actionUrl = "/admin/master_kartukeluarga/" + data.no_kk;
-        $("#keluargaForm").attr("action", actionUrl);
 
-        $("#keluargaForm").find('input[name="_method"]').remove();
-        $("#keluargaForm").append('<input type="hidden" name="_method" value="PUT">');
+        form.attr("action", actionUrl);
+        form.find('input[name="_method"]').remove();
+        form.append('<input type="hidden" name="_method" value="PUT">');
 
         $("#no_kk").val(data.no_kk);
         $("#nik").val(data.nik);
@@ -66,9 +72,23 @@ $(document).ready(function () {
         $("#provinsi").val(data.provinsi);
         $("#tanggal_dibuat").val(data.tanggal_dibuat);
 
-        // Tampilkan modal
-        var myModal = new bootstrap.Modal(document.getElementById('modalKeluarga'));
+        var myModal = new bootstrap.Modal(
+            document.getElementById("modalKeluarga"),
+        );
         myModal.show();
+    });
+
+    // ================= AUTO RESET =================
+    $("#modalKeluarga").on("hidden.bs.modal", function () {
+        let form = $("#keluargaForm");
+
+        form[0].reset();
+        form.find('input[name="_method"]').remove();
+        form.attr("action", "/admin/master_kartukeluarga/masuk");
+
+        form.find("input").not("[type=hidden]").val("");
+
+        $("#modalKeluargaLabel").text("Tambah Data Kepala Keluarga");
     });
 });
 
